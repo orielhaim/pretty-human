@@ -1,22 +1,14 @@
 # Humy
 
-Humy is a deterministic text normalizer for machine-like writing patterns and copied AI-output artifacts. It applies explainable rules, returns every change with its original offset, and reports patterns that are too risky to rewrite automatically.
+Humy is a deterministic text humanizer for machine-like writing patterns and copied AI-output artifacts. It applies explainable rules, returns every change with its original offset, and reports patterns that are too risky to rewrite automatically.
 
 Humy does not use a generative model, an external API, network access, or a probabilistic AI detector. It cannot reliably determine whether a human or an AI wrote text. Its rules edit known patterns regardless of who produced them.
-
-- TypeScript 7
-- Zero runtime dependencies
-- ESM output for Node.js, Bun, and modern bundlers
-- Protected code, URLs, paths, link destinations, and HTML tags
-- Deterministic, inspectable, and designed to be idempotent
 
 ## Install
 
 ```sh
 bun add humy
 ```
-
-The published package also works with npm, pnpm, and other Node.js package managers.
 
 ## Basic usage
 
@@ -159,4 +151,4 @@ The test suite includes rule fixtures, preset behavior, protected regions, inter
 
 ## License
 
-MIT
+[MIT](LICENSE)

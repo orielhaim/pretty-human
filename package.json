@@ -1,8 +1,8 @@
 {
   "name": "humy",
   "version": "0.1.0",
-  "description": "Deterministic normalization for machine-like writing patterns and copied AI-output artifacts",
-  "keywords": ["text", "normalization", "unicode", "markdown", "ai"],
+  "description": "Deterministic humanization for machine-like writing patterns and copied AI-output artifacts",
+  "keywords": ["text", "humanization", "unicode", "markdown", "ai"],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
