@@ -1,0 +1,43 @@
+{
+  "name": "humy",
+  "version": "0.1.0",
+  "description": "Deterministic normalization for machine-like writing patterns and copied AI-output artifacts",
+  "keywords": ["text", "normalization", "unicode", "markdown", "ai"],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist", "README.md", "LICENSE"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "test": "bun test",
+    "build": "bun run clean && bun run build:js && bun run build:types",
+    "build:js": "bun build ./src/index.ts --outdir ./dist --target node --format esm --sourcemap=external --packages=external",
+    "build:types": "tsc -p tsconfig.build.json",
+    "clean": "bun -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true })\"",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src tests bench",
+    "format": "biome format --write src tests bench",
+    "bench": "bun run bench/index.ts",
+    "check": "bun run typecheck && bun run lint && bun test && bun run build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@types/bun": "^1.4.2",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
