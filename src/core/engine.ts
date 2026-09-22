@@ -3,8 +3,8 @@ import { applyChanges, selectEdits, sortSignals } from "./edits.js";
 import { overlapsProtected, scanProtectedRanges } from "./scanner.js";
 import type {
   AnalyzeResult,
-  HumyOptions,
-  HumyResult,
+  HumanizeOptions,
+  HumanizeResult,
   RuleContext,
   Signal,
 } from "./types.js";
@@ -25,8 +25,8 @@ function createContext(
 
 export function runTransform(
   text: string,
-  options: HumyOptions = {},
-): HumyResult {
+  options: HumanizeOptions = {},
+): HumanizeResult {
   const resolved = resolveRules(options);
   const protectedRanges = scanProtectedRanges(text);
   const proposals = [];
@@ -59,7 +59,7 @@ export function runTransform(
 
 export function runAnalysis(
   text: string,
-  options: HumyOptions = {},
+  options: HumanizeOptions = {},
 ): AnalyzeResult {
   const signals: Signal[] = [];
   const protectedRanges = scanProtectedRanges(text);

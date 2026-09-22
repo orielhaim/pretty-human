@@ -2,7 +2,7 @@ import { presets } from "../presets/index.js";
 import { registry } from "../rules/registry.js";
 import type {
   AnyRuleDefinition,
-  HumyOptions,
+  HumanizeOptions,
   RuleId,
   RuleSettings,
 } from "./types.js";
@@ -19,7 +19,7 @@ function enabledSetting(setting: RuleSettings[RuleId]): boolean {
   );
 }
 
-export function resolveRules(options: HumyOptions = {}): ResolvedRule[] {
+export function resolveRules(options: HumanizeOptions = {}): ResolvedRule[] {
   const presetName = options.preset === undefined ? "natural" : options.preset;
   const settings: RuleSettings =
     presetName === false ? {} : { ...presets[presetName] };

@@ -1,21 +1,21 @@
-# Humy
+# Pretty Human
 
-Humy is a deterministic text humanizer for machine-like writing patterns and copied AI-output artifacts. It applies explainable rules, returns every change with its original offset, and reports patterns that are too risky to rewrite automatically.
+Pretty Human is a deterministic text humanizer for machine-like writing patterns and copied AI-output artifacts. It applies explainable rules, returns every change with its original offset, and reports patterns that are too risky to rewrite automatically.
 
-Humy does not use a generative model, an external API, network access, or a probabilistic AI detector. It cannot reliably determine whether a human or an AI wrote text. Its rules edit known patterns regardless of who produced them.
+Pretty Human does not use a generative model, an external API, network access, or a probabilistic AI detector. It cannot reliably determine whether a human or an AI wrote text. Its rules edit known patterns regardless of who produced them.
 
 ## Install
 
 ```sh
-bun add humy
+bun add pretty-human
 ```
 
 ## Basic usage
 
 ```ts
-import { humy } from "humy";
+import { humanize } from "pretty-human";
 
-const result = humy("It’s fast — but expensive…", {
+const result = humanize("It’s fast — but expensive…", {
   preset: "natural",
 });
 
@@ -24,10 +24,10 @@ console.log(result.changes); // Inspectable edits with input ranges
 console.log(result.signals); // Detected patterns that may have been preserved
 ```
 
-`humy()` and its alias `transform()` change text. `analyze()` returns findings without changing the input.
+`humanize()` and its alias `transform()` change text. `analyze()` returns findings without changing the input.
 
 ```ts
-import { analyze } from "humy";
+import { analyze } from "pretty-human";
 
 const result = analyze("It is fast, reliable, and scalable.");
 
@@ -50,16 +50,16 @@ Signals can still be emitted by an enabled rule even when that rule does not tra
 ### Override a preset
 
 ```ts
-import { humy } from "humy";
+import { humanize } from "pretty-human";
 
-humy("One — two", {
+humanize("One — two", {
   preset: "natural",
   rules: {
     "punctuation.em-dash": false,
   },
 });
 
-humy("One — two", {
+humanize("One — two", {
   preset: "safe",
   rules: {
     "punctuation.em-dash": {
@@ -75,10 +75,10 @@ Rule-specific options are inferred from the rule ID. Consumers do not need to co
 ### Fully custom configuration
 
 ```ts
-import { humy } from "humy";
+import { humanize } from "pretty-human";
 
 const input = "It’s copied\u00A0text turn0search0";
-const result = humy(input, {
+const result = humanize(input, {
   preset: false,
   rules: {
     "unicode.nbsp": true,
@@ -91,7 +91,7 @@ const result = humy(input, {
 ## Inspecting changes
 
 ```ts
-const result = humy("It’s fast — but expensive.");
+const result = humanize("It’s fast — but expensive.");
 
 for (const change of result.changes) {
   console.log(change.rule); // unicode.smart-quotes
@@ -106,7 +106,7 @@ Changes never overlap. All `range` values use JavaScript UTF-16 string offsets a
 
 ## Rule categories
 
-Humy exposes stable, namespaced rule IDs across these categories:
+Pretty Human exposes stable, namespaced rule IDs across these categories:
 
 - `unicode`: BOM, safe zero-width cleanup, typography spacing, quotes, ellipsis, and hyphens
 - `whitespace`: trailing whitespace
@@ -120,9 +120,9 @@ Use the exported `rules` metadata to enumerate built-in IDs, categories, and def
 
 ## Unicode safety
 
-Humy does not broadly delete invisible characters. The safe preset removes BOMs, soft hyphens, and zero-width spaces only in contexts where they look like prose-copying artifacts. It preserves ZWJ emoji sequences, ZWJ/ZWNJ in writing systems, numeric grouping spaces, and bidi controls by default. Explicit bidi controls are reported as signals because they can be meaningful.
+Pretty Human does not broadly delete invisible characters. The safe preset removes BOMs, soft hyphens, and zero-width spaces only in contexts where they look like prose-copying artifacts. It preserves ZWJ emoji sequences, ZWJ/ZWNJ in writing systems, numeric grouping spaces, and bidi controls by default. Explicit bidi controls are reported as signals because they can be meaningful.
 
-Quote and English style rules currently target `en`. `locale: "auto"` is accepted as a forward-compatible request and currently resolves to English; Humy does not pretend to perform language detection. Unicode sanitation remains script-conscious.
+Quote and English style rules currently target `en`. `locale: "auto"` is accepted as a forward-compatible request and currently resolves to English; Pretty Human does not pretend to perform language detection. Unicode sanitation remains script-conscious.
 
 ## Protected regions
 
@@ -132,7 +132,7 @@ The internal scanner protects fenced code blocks, inline code, URLs, email addre
 
 - Deterministic patterns cannot understand intent or full sentence semantics.
 - Ambiguous patterns such as `serves as`, formulaic contrasts, repeated triples, and uniform paragraph cadence are generally reported rather than rewritten.
-- Generated-looking style is not evidence of authorship. Humy makes no authorship determination.
+- Generated-looking style is not evidence of authorship. Pretty Human makes no authorship determination.
 - The scanner covers common protected syntax, not every markup language or malformed document.
 - Custom third-party rules are not public in v0.1; the internal rule contract is structured so this can be added without changing built-in rule IDs.
 

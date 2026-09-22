@@ -90,7 +90,7 @@ export type RuleSetting<K extends RuleId> = RuleOptionsMap[K] extends never
 
 export type RuleSettings = { [K in RuleId]?: RuleSetting<K> };
 
-export interface HumyOptions {
+export interface HumanizeOptions {
   /** `natural` by default. Use false to enable only explicitly configured rules. */
   preset?: PresetName | false;
   rules?: RuleSettings;
@@ -98,7 +98,7 @@ export interface HumyOptions {
   locale?: "en" | "auto";
 }
 
-export interface HumyResult {
+export interface HumanizeResult {
   text: string;
   changes: Change[];
   signals: Signal[];

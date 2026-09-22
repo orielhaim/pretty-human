@@ -1,5 +1,5 @@
 {
-  "name": "humy",
+  "name": "pretty-human",
   "version": "0.1.0",
   "description": "Deterministic humanization for machine-like writing patterns and copied AI-output artifacts",
   "keywords": ["text", "humanization", "unicode", "markdown", "ai"],

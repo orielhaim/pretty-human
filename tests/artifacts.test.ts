@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { humy } from "../src/index.js";
+import { humanize } from "../src/index.js";
 
 describe("model and UI artifact cleanup", () => {
   test.each([
@@ -24,7 +24,7 @@ describe("model and UI artifact cleanup", () => {
     ["Text ppl-ai-file-upload more", "Text  more", "artifact.perplexity"],
     ["Text [cite: 1, 2] more", "Text  more", "artifact.placeholder"],
   ] as const)("cleans %s", (input, output, rule) => {
-    const result = humy(input, { preset: "safe" });
+    const result = humanize(input, { preset: "safe" });
     expect(result.text).toBe(output);
     expect(result.changes[0]?.rule).toBe(rule);
   });
@@ -32,7 +32,7 @@ describe("model and UI artifact cleanup", () => {
   test("removes structural response wrappers", () => {
     const input =
       "Sure! Here's a polished version:\n\nThe actual text.\n\nIf you’d like, I can make it shorter.";
-    const result = humy(input);
+    const result = humanize(input);
     expect(result.text).toBe("The actual text.\n\n");
     expect(result.changes.map((change) => change.rule)).toEqual([
       "artifact.response-preamble",
@@ -42,12 +42,12 @@ describe("model and UI artifact cleanup", () => {
 
   test("safe does not remove response framing", () => {
     const input = "Here is a revised version:\nText.";
-    expect(humy(input, { preset: "safe" }).text).toBe(input);
+    expect(humanize(input, { preset: "safe" }).text).toBe(input);
   });
 
   test("ordinary uses of citation words survive", () => {
     const input =
       "The citation needed careful review, and the attached file was useful.";
-    expect(humy(input, { preset: "safe" }).text).toBe(input);
+    expect(humanize(input, { preset: "safe" }).text).toBe(input);
   });
 });

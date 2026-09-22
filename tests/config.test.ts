@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import {
   analyze,
-  type HumyOptions,
-  humy,
+  type HumanizeOptions,
+  humanize,
   presets,
   rules,
   transform,
@@ -10,22 +10,22 @@ import {
 
 describe("configuration and public API", () => {
   test("natural is the default preset", () => {
-    expect(humy("It is fast — but costly.").text).toBe(
+    expect(humanize("It is fast — but costly.").text).toBe(
       "It is fast, but costly.",
     );
-    expect(humy("It is fast — but costly.")).toEqual(
-      humy("It is fast — but costly.", { preset: "natural" }),
+    expect(humanize("It is fast — but costly.")).toEqual(
+      humanize("It is fast — but costly.", { preset: "natural" }),
     );
   });
 
   test("safe avoids stylistic rewriting", () => {
-    expect(humy("It’s fast — but costly…", { preset: "safe" }).text).toBe(
+    expect(humanize("It’s fast — but costly…", { preset: "safe" }).text).toBe(
       "It's fast — but costly...",
     );
   });
 
   test("preset rules can be disabled", () => {
-    const result = humy("It’s fast — but costly.", {
+    const result = humanize("It’s fast — but costly.", {
       preset: "natural",
       rules: { "punctuation.em-dash": false },
     });
@@ -36,15 +36,15 @@ describe("configuration and public API", () => {
   });
 
   test("preset rules accept inferred options", () => {
-    const options: HumyOptions = {
+    const options: HumanizeOptions = {
       preset: "safe",
       rules: { "punctuation.em-dash": { enabled: true, strategy: "hyphen" } },
     };
-    expect(humy("one — two", options).text).toBe("one - two");
+    expect(humanize("one — two", options).text).toBe("one - two");
   });
 
   test("fully custom mode enables only selected rules", () => {
-    const result = humy("It’s fine… — really", {
+    const result = humanize("It’s fine… — really", {
       preset: false,
       rules: { "unicode.smart-quotes": true, "unicode.ellipsis": true },
     });
@@ -56,7 +56,7 @@ describe("configuration and public API", () => {
   });
 
   test("transform is an alias and analyze never mutates", () => {
-    expect(transform).toBe(humy);
+    expect(transform).toBe(humanize);
     const result = analyze("It’s fast — but costly.");
     expect(result.text).toBe("It’s fast — but costly.");
     expect(result.signals.map((signal) => signal.rule)).toContain(
@@ -70,8 +70,8 @@ describe("configuration and public API", () => {
   });
 
   test("empty and no-op input stay unchanged", () => {
-    expect(humy("")).toEqual({ text: "", changes: [], signals: [] });
-    expect(humy("Plain text.", { preset: "safe" })).toEqual({
+    expect(humanize("")).toEqual({ text: "", changes: [], signals: [] });
+    expect(humanize("Plain text.", { preset: "safe" })).toEqual({
       text: "Plain text.",
       changes: [],
       signals: [],

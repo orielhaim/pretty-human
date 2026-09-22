@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { humy } from "../src/index.js";
+import { humanize } from "../src/index.js";
 
 describe("engine invariants", () => {
   test("change offsets refer to the original input", () => {
     const input = "It’s fast — but costly…";
-    const result = humy(input);
+    const result = humanize(input);
     for (const change of result.changes)
       expect(input.slice(change.range.start, change.range.end)).toBe(
         change.original,
@@ -21,21 +21,21 @@ describe("engine invariants", () => {
     const input =
       "Sure! Here's a polished version:\r\n\r\n- **Performance:** It’s fast — but it utilizes resources…  \r\n\r\nLet me know if you’d like more.\r\n";
     for (const preset of ["safe", "natural", "aggressive"] as const) {
-      const once = humy(input, { preset }).text;
-      expect(humy(once, { preset }).text).toBe(once);
+      const once = humanize(input, { preset }).text;
+      expect(humanize(once, { preset }).text).toBe(once);
     }
   });
 
   test("keeps mixed CRLF and LF delimiters unless a targeted rule changes them", () => {
     const input = "One.\r\nTwo.\nThree.\r\n";
-    expect(humy(input, { preset: "safe" }).text).toBe(input);
+    expect(humanize(input, { preset: "safe" }).text).toBe(input);
   });
 
   test("handles a large document without losing content", () => {
     const unit = "Plain content with no configured markers.\n";
     const input = unit.repeat(30_000);
     expect(input.length).toBeGreaterThan(1_000_000);
-    expect(humy(input, { preset: "safe" }).text).toBe(input);
+    expect(humanize(input, { preset: "safe" }).text).toBe(input);
   });
 
   test("does not crash on deterministic arbitrary Unicode", () => {
@@ -51,9 +51,9 @@ describe("engine invariants", () => {
         if (point < 0xd800 || point > 0xdfff)
           input += String.fromCodePoint(point);
       }
-      const once = humy(input, { preset: "safe" }).text;
+      const once = humanize(input, { preset: "safe" }).text;
       expect(typeof once).toBe("string");
-      expect(humy(once, { preset: "safe" }).text).toBe(once);
+      expect(humanize(once, { preset: "safe" }).text).toBe(once);
     }
   });
 });

@@ -1,4 +1,4 @@
-import { humy } from "../src/index.js";
+import { humanize } from "../src/index.js";
 
 const sample = `## Performance
 
@@ -13,11 +13,11 @@ const sizes = [1_024, 10_240, 102_400, 1_048_576];
 
 for (const size of sizes) {
   const input = sample.repeat(Math.ceil(size / sample.length)).slice(0, size);
-  for (let warmup = 0; warmup < 3; warmup++) humy(input);
+  for (let warmup = 0; warmup < 3; warmup++) humanize(input);
 
   const iterations = size >= 1_048_576 ? 5 : size >= 102_400 ? 20 : 100;
   const start = performance.now();
-  for (let iteration = 0; iteration < iterations; iteration++) humy(input);
+  for (let iteration = 0; iteration < iterations; iteration++) humanize(input);
   const elapsed = performance.now() - start;
   const milliseconds = elapsed / iterations;
   const megabytesPerSecond = size / 1_048_576 / (milliseconds / 1_000);

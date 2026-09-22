@@ -1,20 +1,26 @@
 import { runAnalysis, runTransform } from "./core/engine.js";
 import type {
   AnalyzeResult,
-  HumyOptions,
-  HumyResult,
+  HumanizeOptions,
+  HumanizeResult,
   RuleMetadata,
 } from "./core/types.js";
 import { presets } from "./presets/index.js";
 import { registry } from "./rules/registry.js";
 
-export function humy(text: string, options?: HumyOptions): HumyResult {
+export function humanize(
+  text: string,
+  options?: HumanizeOptions,
+): HumanizeResult {
   return runTransform(text, options);
 }
 
-export const transform = humy;
+export const transform = humanize;
 
-export function analyze(text: string, options?: HumyOptions): AnalyzeResult {
+export function analyze(
+  text: string,
+  options?: HumanizeOptions,
+): AnalyzeResult {
   return runAnalysis(text, options);
 }
 
@@ -33,8 +39,8 @@ export type {
   Confidence,
   EmDashStrategy,
   EnDashStrategy,
-  HumyOptions,
-  HumyResult,
+  HumanizeOptions,
+  HumanizeResult,
   PresetName,
   QuoteStyle,
   RuleCategory,
